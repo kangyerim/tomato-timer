@@ -7,7 +7,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/pomodoro',
+      path: '/',
       name: 'Pomodoro',
       components: {
         header: () => import('@/components/header.vue'),

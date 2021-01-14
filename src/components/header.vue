@@ -15,6 +15,6 @@ export default {
 <style>
 .header {
 	padding: 20px;
-	color: plum;
+	color: #e2928d;
 }
 </style>

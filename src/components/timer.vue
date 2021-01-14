@@ -17,7 +17,15 @@ export default {
 		seconds: "00",
 		isWorking: false, //검은색
 		timerStart: false, // true: red, false: green
+		interval: null,
 	}),
+	watch: {
+		workMin: function () {
+			if (this.workMin == 0) {
+				clearInterval(this.interval);
+			}
+		},
+	},
 	methods: {
 		letStart({ setworkMin, setrefreshMin }) {
 			this.workMin = setworkMin;
@@ -26,7 +34,7 @@ export default {
 		},
 		countDown(settedTime) {
 			let time = parseInt(settedTime);
-			setInterval(() => {
+			this.interval = setInterval(() => {
 				this.workMin = time--;
 			}, 1000);
 		},

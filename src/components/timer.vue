@@ -22,17 +22,11 @@ export default {
 	}),
 	watch: {
 		workMin: function () {
-			if (this.workMin == 0) {
+			if (this.workMin < 0 && this.seconds < 0) {
 				clearInterval(this.minsInterval);
+				this.workMin = 0;
+				this.seconds = 0;
 				this.timerStart = false;
-			}
-		},
-		seconds: function () {
-			if (this.workMin == 0) {
-				clearInterval(this.secondsInterval);
-			}
-			if (this.seconds == 0) {
-				this.countSeconds();
 			}
 		},
 	},
@@ -43,26 +37,14 @@ export default {
 	},
 	methods: {
 		letStart({ setWorkMin, setrefreshMin }) {
-			this.workMin = setWorkMin;
-			this.refreshMin = setrefreshMin;
-			this.countMin(this.workMin);
+			this.countDown(setWorkMin);
 			this.timerStart = true;
 		},
-		countMin(workMin) {
-			const dateObj = new Date();
-			dateObj.setMinutes(workMin);
-			let time = dateObj.getMinutes(workMin);
-			this.countSeconds();
+		countDown(time) {
 			this.minsInterval = setInterval(() => {
-				this.workMin = time--;
-			}, 60000);
-		},
-		countSeconds() {
-			const dateObj = new Date();
-			dateObj.setSeconds(59);
-			let time = dateObj.getSeconds(59);
-			this.secondsInterval = setInterval(() => {
-				this.seconds = time--;
+				let oneSecondLater = time--;
+				this.workMin = Math.floor(oneSecondLater / 60);
+				this.seconds = Math.floor(oneSecondLater % 60);
 			}, 1000);
 		},
 	},

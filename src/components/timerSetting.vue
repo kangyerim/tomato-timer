@@ -24,18 +24,17 @@ export default {
 		setrefreshMin: 0,
 		minutes: [
 			{ time: "00", value: 0 },
-			{ time: "05", value: 5 },
-			{ time: "10", value: 10 },
-			{ time: "15", value: 15 },
-			{ time: "20", value: 20 },
-			{ time: "25", value: 25 },
-			{ time: "30", value: 30 },
+			{ time: "05", value: 300 },
+			{ time: "10", value: 600 },
+			{ time: "15", value: 900 },
+			{ time: "20", value: 1200 },
+			{ time: "25", value: 1500 },
+			{ time: "30", value: 1800 },
 		],
 	}),
 	methods: {
 		onStart() {
 			const { setWorkMin, setrefreshMin } = this;
-			console.log("setworkMin", typeof setWorkMin);
 			this.$emit("onStart", { setWorkMin, setrefreshMin });
 		},
 	},

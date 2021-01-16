@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div class="timer">{{workMin}} : {{seconds}}</div>
-		<TimerSetting @onStart="letStart" :workMin="workMin" :refreshMin="refreshMin" />
+		<div class="timer" :style="textColor">{{workMin}} : {{10 > seconds ? "0"+seconds :seconds}}</div>
+		<TimerSetting @onStart="letStart" />
 	</div>
 </template>
 
@@ -14,28 +14,55 @@ export default {
 	data: () => ({
 		workMin: 0,
 		refreshMin: 0,
-		seconds: "00",
+		seconds: 0,
 		isWorking: false, //검은색
 		timerStart: false, // true: red, false: green
-		interval: null,
+		minsInterval: null,
+		secondsInterval: null,
 	}),
 	watch: {
 		workMin: function () {
 			if (this.workMin == 0) {
-				clearInterval(this.interval);
+				clearInterval(this.minsInterval);
+				this.timerStart = false;
+			}
+		},
+		seconds: function () {
+			if (this.workMin == 0) {
+				clearInterval(this.secondsInterval);
+			}
+			if (this.seconds == 0) {
+				this.countSeconds();
 			}
 		},
 	},
-	methods: {
-		letStart({ setworkMin, setrefreshMin }) {
-			this.workMin = setworkMin;
-			this.refreshMin = setrefreshMin;
-			this.countDown(this.workMin);
+	computed: {
+		textColor() {
+			return this.timerStart ? { color: "#6dd4b2" } : { color: "#e2928d" };
 		},
-		countDown(settedTime) {
-			let time = parseInt(settedTime);
-			this.interval = setInterval(() => {
+	},
+	methods: {
+		letStart({ setWorkMin, setrefreshMin }) {
+			this.workMin = setWorkMin;
+			this.refreshMin = setrefreshMin;
+			this.countMin(this.workMin);
+			this.timerStart = true;
+		},
+		countMin(workMin) {
+			const dateObj = new Date();
+			dateObj.setMinutes(workMin);
+			let time = dateObj.getMinutes(workMin);
+			this.countSeconds();
+			this.minsInterval = setInterval(() => {
 				this.workMin = time--;
+			}, 60000);
+		},
+		countSeconds() {
+			const dateObj = new Date();
+			dateObj.setSeconds(59);
+			let time = dateObj.getSeconds(59);
+			this.secondsInterval = setInterval(() => {
+				this.seconds = time--;
 			}, 1000);
 		},
 	},

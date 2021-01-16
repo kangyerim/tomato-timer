@@ -1,7 +1,7 @@
 <template>
 	<form @submit.prevent="onStart">
 		<span>집중할</span>
-		<select v-model="setworkMin">
+		<select v-model="setWorkMin">
 			<option v-for="(item, i) in minutes" :key="i" :value="item.value">{{item.time}}</option>
 		</select>
 		<span>분</span>
@@ -19,18 +19,8 @@
 <script>
 export default {
 	name: "timer-setting",
-	props: {
-		workMin: {
-			type: Number,
-			required: true,
-		},
-		refreshMin: {
-			type: Number,
-			required: true,
-		},
-	},
 	data: () => ({
-		setworkMin: 0,
+		setWorkMin: 0,
 		setrefreshMin: 0,
 		minutes: [
 			{ time: "00", value: 0 },
@@ -44,15 +34,12 @@ export default {
 	}),
 	methods: {
 		onStart() {
-			const { setworkMin, setrefreshMin } = this;
-			this.$emit("onStart", { setworkMin, setrefreshMin });
+			const { setWorkMin, setrefreshMin } = this;
+			console.log("setworkMin", typeof setWorkMin);
+			this.$emit("onStart", { setWorkMin, setrefreshMin });
 		},
 	},
-	created() {
-		/* props 재할당 */
-		this.setworkMin = this.workMin;
-		this.setrefreshMin = this.refreshMin;
-	},
+	created() {},
 };
 </script>
 

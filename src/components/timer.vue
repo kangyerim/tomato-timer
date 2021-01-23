@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import TimerSetting from "@/components/timerSetting.vue";
 
 export default {
@@ -28,6 +29,7 @@ export default {
 				clearInterval(this.minsInterval);
 				this.init();
 				this.workingMin = 0;
+				this.tomatoList.push(true);
 				this.countDownRefresh(this.refreshMin);
 			}
 		},
@@ -40,6 +42,7 @@ export default {
 		},
 	},
 	computed: {
+		...mapState(["tomatoList"]),
 		textColor() {
 			return this.timerStart ? { color: "#e2928d" } : { color: "#6dd4b2" };
 		},

@@ -1,32 +1,25 @@
 <!-- 완료한 tomato 4개씩 -->
 <template>
-	<div>
-		<span class="one-basket">
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-		</span>
-		<span class="one-basket">
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-		</span>
-		<span class="one-basket">
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-			<img class="one-tomato" src="@/assets/tomato.png" alt="one_tomato" />
-		</span>
-	</div>
+	<span class="one-basket">
+		<img
+			v-for="(tomato,i) in tomatoList"
+			:key="i"
+			class="one-tomato"
+			src="@/assets/tomato.png"
+			alt="one_tomato"
+		/>
+	</span>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import tomato from "@/assets/tomato.png";
 
 export default {
 	name: "basket",
+	computed: {
+		...mapState(["tomatoList"]),
+	},
 };
 </script>
 
@@ -35,7 +28,8 @@ export default {
 	padding: 10px;
 }
 .one-tomato {
-	width: 20px;
-	height: 20px;
+	width: 30px;
+	height: 30px;
+	padding: 8px;
 }
 </style>

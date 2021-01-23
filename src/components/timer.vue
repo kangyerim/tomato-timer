@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="timer" :style="textColor">{{workMin}} : {{10 > seconds ? "0"+seconds :seconds}}</div>
+		<div class="timer" :style="textColor">{{minutes}} : {{10 > seconds ? "0"+seconds :seconds}}</div>
 		<TimerSetting @onStart="letStart" />
 	</div>
 </template>
@@ -12,40 +12,63 @@ export default {
 	name: "timer",
 	components: { TimerSetting },
 	data: () => ({
-		workMin: 0,
-		refreshMin: 0,
+		minutes: 0,
 		seconds: 0,
+		timing: 0,
+		workingMin: 0,
+		refreshMin: 0,
 		isWorking: false, //검은색
 		timerStart: false, // true: red, false: green
 		minsInterval: null,
-		secondsInterval: null,
+		refreshInterval: null,
 	}),
 	watch: {
-		workMin: function () {
-			if (this.workMin < 0 && this.seconds < 0) {
+		workingMin: function () {
+			if (this.minutes < 0 && this.seconds < 0) {
 				clearInterval(this.minsInterval);
-				this.workMin = 0;
-				this.seconds = 0;
-				this.timerStart = false;
+				this.init();
+				this.workingMin = 0;
+				this.countDownRefresh(this.refreshMin);
+			}
+		},
+		refreshMin: function () {
+			if (this.minutes < 0 && this.seconds < 0) {
+				clearInterval(this.refreshInterval);
+				this.refreshMin = 0;
+				this.init();
 			}
 		},
 	},
 	computed: {
 		textColor() {
-			return this.timerStart ? { color: "#6dd4b2" } : { color: "#e2928d" };
+			return this.timerStart ? { color: "#e2928d" } : { color: "#6dd4b2" };
 		},
 	},
 	methods: {
 		letStart({ setWorkMin, setrefreshMin }) {
+			this.workingMin = setWorkMin;
+			this.refreshMin = setrefreshMin;
 			this.countDown(setWorkMin);
 			this.timerStart = true;
 		},
 		countDown(time) {
 			this.minsInterval = setInterval(() => {
-				let oneSecondLater = time--;
-				this.workMin = Math.floor(oneSecondLater / 60);
-				this.seconds = Math.floor(oneSecondLater % 60);
+				this.workingMin = time--;
+				this.minutes = Math.floor(this.workingMin / 60);
+				this.seconds = Math.floor(this.workingMin % 60);
 			}, 1000);
+		},
+		countDownRefresh(time) {
+			this.refreshInterval = setInterval(() => {
+				this.refreshMin = time--;
+				this.minutes = Math.floor(this.refreshMin / 60);
+				this.seconds = Math.floor(this.refreshMin % 60);
+			}, 1000);
+		},
+		init() {
+			this.timerStart = false;
+			this.minutes = 0;
+			this.seconds = 0;
 		},
 	},
 };
